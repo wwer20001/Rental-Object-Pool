@@ -46,6 +46,25 @@ public class RentalContainer : MonoBehaviour, IRentable
         }
     }
 
+    public bool Set(string key, GameObject prefab, int createCount)
+    {
+        if (poolingPrefab == null)
+        {
+            Debug.LogWarning(string.Format("RentalContainer initialze failed! :: invalid prefab - key({0})", ObjectKey));
+            return false;
+        }
+        if (poolingPrefab.GetComponent<RentableObject>() == null)
+        {
+            Debug.LogWarning(string.Format("RentalContainer initialze failed! :: prefab is not RentableObject - key({0})", ObjectKey));
+            return false;
+        }
+
+        ObjectKey = key;
+        poolingPrefab = prefab;
+        initCreateCount = createCount;
+        return true;
+    }
+
     private RentableObject CreateObject()
     {
         var newObject = Instantiate(poolingPrefab).GetComponent<RentableObject>();

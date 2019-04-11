@@ -80,6 +80,36 @@ public class RentalObjectPool : MonoBehaviour, IRentable
         }
     }
 
+    public bool CreateContainer(string key, GameObject poolingPrefab, int createCount = 0)
+    {
+        if (poolingPrefab == null)
+        {
+            Debug.LogWarning(string.Format("RentalContainer create failed! :: invalid prefab - key({0})", key));
+            return false;
+        }
+        if (poolingPrefab.GetComponent<RentableObject>() == null)
+        {
+            Debug.LogWarning(string.Format("RentalContainer create failed! :: prefab is not RentableObject - key({0})", key));
+            return false;
+        }
+
+        if (rentalContainers.ContainsKey(key))
+        {
+            Debug.LogWarning(string.Format("RentalContainer create failed! :: key({0}) is already exist.", key));
+            return false;
+        }
+
+        var newContainer = new GameObject(string.Format("{0}Container", key)).AddComponent<RentalContainer>();
+        if(!newContainer.Set(key, poolingPrefab, createCount))
+        {
+            Destroy(newContainer.gameObject);
+            return false;
+        }
+
+        rentalContainers.Add(key, newContainer);
+        return true;
+    }
+
     public void ClearContainer(string key)
     {
         if (rentalContainers.ContainsKey(key))
