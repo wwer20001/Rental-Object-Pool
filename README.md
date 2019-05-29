@@ -1,6 +1,14 @@
 # Rental-Object-Pool
 
-ver 1.0
+## New Version
+
+### Ver 1.1
+
+Add random rental object pool container.
+
+## Previous Version
+
+### Ver 1.0
 
 Object Pool for Unity.
 
